@@ -17,7 +17,7 @@ struct RequestTokenResponse: Codable {
     
     enum Codingkeys: String, CodingKey {
         case success
-        case expiresAt = "expires_at"
-        case requestToken = "request_token"
+        case expires_at = "expires_at"
+        case request_token = "request_token"
     }
 }
