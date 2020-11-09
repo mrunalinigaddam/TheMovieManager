@@ -11,8 +11,8 @@ import Foundation
 
 struct RequestTokenResponse: Codable {
     let success: Bool
-    let expiresAt: String
-    let requestToken: String
+    let expires_at: String
+    let request_token: String
     
     
     enum Codingkeys: String, CodingKey {

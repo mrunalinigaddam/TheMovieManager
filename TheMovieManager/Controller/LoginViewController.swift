@@ -32,7 +32,7 @@ class LoginViewController: UIViewController {
     }
     func handleRequestTokenResponse(success: Bool, error:Error?) {
         if success {
-           print(TMDBClient.Auth.requestToken)
+            print(TMDBClient.Auth.requestToken)
         }
         else {
            print("failed")
