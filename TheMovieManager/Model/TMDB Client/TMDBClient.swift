@@ -25,12 +25,14 @@ class TMDBClient {
         case getWatchlist
         case getRequestToken
         case login
+        case createSessionId
         
         var stringValue: String {
             switch self {
             case .getWatchlist: return Endpoints.base + "/account/\(Auth.accountId)/watchlist/movies" + Endpoints.apiKeyParam + "&session_id=\(Auth.sessionId)"
             case .getRequestToken: return Endpoints.base + "/authentication/token/new" + Endpoints.apiKeyParam
             case .login: return Endpoints.base + "/authentication/token/validate_with_login" + Endpoints.apiKeyParam
+                 case .createSessionId: return Endpoints.base + "/authentication/session/new" + Endpoints.apiKeyParam
             }
         }
         
@@ -59,7 +61,7 @@ class TMDBClient {
                 Auth.requestToken = responseObject.request_token
                 completion(true, nil)
             } catch {
-                
+              completion(false, nil)
             }
         }
     }
@@ -97,5 +99,31 @@ class TMDBClient {
         }
         task.resume()
     }
-    
+    class func createSessionId(completion: @escaping (Bool, Error?) -> Void) {
+        var request = URLRequest(url:Endpoints.createSessionId.url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        let body = PostSession(requestToken: Auth.requestToken)
+        request.httpBody = try!
+            JSONEncoder().encode(body)
+        let task = URLSession.shared.dataTask(with: request)
+        { (data, response, error) in
+            guard let data = data else {
+                completion(false, error)
+                return
+            }
+            do
+            {
+                let decoder = JSONDecoder()
+                let responseObject = try
+                    decoder.decode(SessionResponse.self, from: data)
+                Auth.sessionId = responseObject.sessionId
+                completion(true, nil)
+            } catch {
+                completion(false, nil)
+            }
+            
+        }
+        task.resume()
+    }
 }
