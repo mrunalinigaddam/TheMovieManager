@@ -16,6 +16,10 @@ class FavoritesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        TMDBClient.getFavouritelist { (movies, error) in
+            MovieModel.favorites = movies
+            self.tableView.reloadData()
+        }
         
     }
     

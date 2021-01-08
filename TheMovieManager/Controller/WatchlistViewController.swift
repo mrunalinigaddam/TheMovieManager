@@ -19,10 +19,8 @@ class WatchlistViewController: UIViewController {
         
         _ = TMDBClient.getWatchlist() { movies, error in
             MovieModel.watchlist = movies
-            DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,7 +35,6 @@ class WatchlistViewController: UIViewController {
             detailVC.movie = MovieModel.watchlist[selectedIndex]
         }
     }
-    
 }
 
 extension WatchlistViewController: UITableViewDataSource, UITableViewDelegate {
@@ -52,11 +49,8 @@ extension WatchlistViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTableViewCell")!
-        
         let movie = MovieModel.watchlist[indexPath.row]
-        
         cell.textLabel?.text = movie.title
-        
         return cell
     }
     
